@@ -1,0 +1,22 @@
+﻿@model List<TaskManager.Models.PersonalTask>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Tasks</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            @foreach(var task in Model)
+            {
+                <div>@task.Title</div>
+                <div>@task.Content</div>
+                <div>@task.LastModified</div>
+            }
+        </div>
+    </div>
+</div>
