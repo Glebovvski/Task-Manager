@@ -14,6 +14,7 @@ namespace TaskManager.Models
         [Required]
         public string Title { get; set; }
         [Required]
+        [MinLength(20)]
         public string Content { get; set; }
         public DateTime LastModified { get; set; }
     }
