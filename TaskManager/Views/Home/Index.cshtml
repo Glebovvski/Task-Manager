@@ -1,22 +1,60 @@
 ﻿@model List<TaskManager.Models.PersonalTask>
-
 @{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Tasks</h1>
-</div>
+<p>
+</p>
 
-<div class="row">
-    <div class="col-md-6">
-        <div>
-            @foreach(var task in Model)
-            {
-                <div>@task.Title</div>
-                <div>@task.Content</div>
-                <div>@task.LastModified</div>
-            }
+
+    @{
+        var options = new AjaxOptions()
+        {
+            HttpMethod = "Post",
+            InsertionMode = InsertionMode.ReplaceWith
+        };
+    }
+<div class="btn btn-success text-center text-info">
+        @Ajax.ActionLink("Create new Task", "Create", "Create", options)
+        
+    </div>
+<p></p>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+@foreach (var task in Model)
+{
+<div class="row ">
+    <div class="col-md-offset-2 col-md-8 form-group well">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8 text-center"><h2>@task.Title</h2></div>
+            <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
+            <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">@task.Content</div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-10 col-md-1">@task.LastModified.ToShortDateString()</div>
+
+        </div>
         </div>
     </div>
-</div>
+}
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+           $(".delItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+    }
