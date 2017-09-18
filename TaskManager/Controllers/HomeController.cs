@@ -10,6 +10,12 @@ namespace TaskManager.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        public ActionResult TaskView(int id)
+        {
+            var context = new TaskContext();
+            var task = context.Task.Find(id);
+            return View(task);
+        }
         public ActionResult Index()
         {
             var context = new TaskContext();
