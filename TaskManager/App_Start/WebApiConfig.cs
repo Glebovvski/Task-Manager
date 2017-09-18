@@ -15,9 +15,22 @@ namespace TaskManager
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "HomeApi",
+                routeTemplate: "api/{controller}"
+            );
+            config.Routes.MapHttpRoute(
+                name: "EditApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
+                name: "CreateApi",
+                routeTemplate: "api/{controller}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
+                name: "DeleteApi",
+                routeTemplate: "api/{controller}/{id}"
             );
         }
     }
