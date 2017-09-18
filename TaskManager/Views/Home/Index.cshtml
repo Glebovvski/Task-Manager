@@ -1,23 +1,22 @@
-﻿@model List<TaskManager.Models.PersonalTask>
+@using Microsoft.AspNet.Identity
+@model List<TaskManager.Models.PersonalTask>
 @{
     ViewBag.Title = "Home Page";
 }
 
-<p>
-</p>
-
-
-    @{
-        var options = new AjaxOptions()
+<p></p>
+    @{var options = new AjaxOptions()
         {
             HttpMethod = "Post",
             InsertionMode = InsertionMode.ReplaceWith
         };
     }
-<div class="btn btn-success text-center text-info">
+<div class="row">
+    <div class="col-md-offset-2 btn btn-success text-center text-info">
         @Ajax.ActionLink("Create new Task", "Create", "Create", options)
-        
+
     </div>
+</div>
 <p></p>
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
@@ -27,7 +26,9 @@
 <div class="row ">
     <div class="col-md-offset-2 col-md-8 form-group well">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8 text-center"><h2>@task.Title</h2></div>
+            <div class="col-md-offset-2 col-md-8 text-center">
+                <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class="nolink"})</h2>
+            </div>
             <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
             <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
         </div>
@@ -41,6 +42,7 @@
         </div>
     </div>
 }
+
 @section scripts
 {
     <script type="text/javascript">
