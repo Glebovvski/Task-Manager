@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using System.Web.Http;
 using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
     [Authorize]
-    public class CreateController : Controller
+    public class CreateApiController : ApiController
     {
         // GET: Update
-        public ActionResult Create()
+        public IHttpActionResult Get()
         {
-            return View();
+            return Ok();
         }
         [HttpPost]
-        public ActionResult Create(string content,string title)
+        public IHttpActionResult Post([FromBody]string content, [FromBody]string title)
         {
             var context = new TaskContext();
 
@@ -29,7 +29,7 @@ namespace TaskManager.Controllers
             context.Task.Add(task);
             context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return Ok(task);
 
         }
     }
