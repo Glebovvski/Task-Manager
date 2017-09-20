@@ -1,22 +1,24 @@
-@using Microsoft.AspNet.Identity
-@model List<TaskManager.Models.PersonalTask>
+@model PagedList.IPagedList<TaskManager.Models.PersonalTask>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Home Page";
 }
 
-<p></p>
-    @{var options = new AjaxOptions()
+<p>
+</p>
+
+
+    @{
+        var options = new AjaxOptions()
         {
             HttpMethod = "Post",
             InsertionMode = InsertionMode.ReplaceWith
         };
     }
-<div class="row">
-    <div class="col-md-offset-2 btn btn-success text-center text-info">
+<div class="btn btn-success text-center text-info">
         @Ajax.ActionLink("Create new Task", "Create", "Create", options)
-
+        
     </div>
-</div>
 <p></p>
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
@@ -42,7 +44,9 @@
         </div>
     </div>
 }
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 @section scripts
 {
     <script type="text/javascript">

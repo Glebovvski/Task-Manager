@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TaskManager.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace TaskManager.Controllers
 {
@@ -16,11 +18,13 @@ namespace TaskManager.Controllers
             var task = context.Task.Find(id);
             return View(task);
         }
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             var context = new TaskContext();
             var tasks = context.Task.OrderByDescending(c => c.LastModified).ToList();
-            return View(tasks);
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(tasks.ToPagedList(pageNumber,pageSize));
         }
 
     }
