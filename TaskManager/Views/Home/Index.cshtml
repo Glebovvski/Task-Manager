@@ -1,41 +1,44 @@
-@model PagedList.IPagedList<TaskManager.Models.PersonalTask>
-@using PagedList.Mvc;
+@using TaskManager.Helpers
+
+@model IEnumerable<TaskManager.Models.PersonalTask>
+
 @{
     ViewBag.Title = "Home Page";
 }
 
-<p>
-</p>
-
-
+<br />
     @{
         var options = new AjaxOptions()
         {
-            HttpMethod = "Post",
+            HttpMethod = "Get",
             InsertionMode = InsertionMode.ReplaceWith
         };
     }
-<div class="btn btn-success text-center text-info">
+
+<div class="row">
+    <div class="col-md-offset-2 btn btn-success text-center text-info">
         @Ajax.ActionLink("Create new Task", "Create", "Create", options)
-        
     </div>
-<p></p>
+</div>
+<br />
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
-@foreach (var task in Model)
-{
-<div class="row ">
+    @foreach (var tasks in Model.Batch(3))
+    {
+        foreach (var task in tasks)
+        {
+         <div class="row">
     <div class="col-md-offset-2 col-md-8 form-group well">
         <div class="row">
             <div class="col-md-offset-2 col-md-8 text-center">
-                <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class="nolink"})</h2>
+                <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
             </div>
             <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
             <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
         </div>
         <div class="row">
-            <div class="col-md-12 ">@task.Content</div>
+            <div class="col-md-12">@task.Content</div>
         </div>
         <div class="row">
             <div class="col-md-offset-10 col-md-1">@task.LastModified.ToShortDateString()</div>
@@ -43,24 +46,106 @@
         </div>
         </div>
     </div>
-}
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        }
+    }
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        <div id="loadMore" class="col-md-offset-5 col-md-2 text-center text-info btn btn-primary">
+            <a>
+                Load More &raquo;
+                <span>
+                    <img id="loading" style="display: none;" />
+                </span>
+            </a>
+    </div>
+<div id="toTop" class="btn btn-warning text-center pull-right">
+    ^ Наверх </div >
 @section scripts
 {
-    <script type="text/javascript">
+        <script type="text/javascript">
+            $(function () {
 
-        $(function () {
-            $.ajaxSetup({ cache: false });
-           $(".delItem").click(function (e) {
+                $(window).scroll(function () {
 
-                e.preventDefault();
-                $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
+                    if ($(this).scrollTop() != 0) {
+
+                        $('#toTop').fadeIn();
+
+                    } else {
+
+                        $('#toTop').fadeOut();
+
+                    }
+
                 });
+
+                $('#toTop').click(function () {
+
+                    $('body,html').animate({ scrollTop: 0 }, 800);
+
+                });
+
             });
-        })
-    </script>
+
+
+            $(function () {
+
+                var loadCount = 1;
+                var loading = $("#loading");
+                $("#loadMore").on("click", function (e) {
+
+                    e.preventDefault();
+
+                    $(document).on({
+
+                        ajaxStart: function () {
+                            loading.show();
+                        },
+                        ajaxStop: function () {
+                            loading.hide();
+                        }
+                    });
+
+                    var url = "/Home/LoadMoreTasks/";
+                    $.ajax({
+                        url: url,
+                        data: { size: loadCount * 3 },
+                        cache: false,
+                        type: "POST",
+                        success: function (data) {
+
+                            if (data.length !== 0) {
+                                $(data.ModelString).insertBefore("#loadMore").hide().fadeIn(2000);
+                            }
+
+                            var ajaxModelCount = data.ModelCount - (loadCount * 3);
+                            if (ajaxModelCount <= 0) {
+                                $("#loadMore").hide().fadeOut(2000);
+                            }
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                            alert("message : \n" +
+                                "An error occurred, for more info check the js console" +
+                                "\n status : \n" + status + " \n error : \n" + error);
+                        }
+                    });
+
+                    loadCount = loadCount + 1;
+                });
+
+            });
+
+            $(function () {
+                $.ajaxSetup({ cache: false });
+                $(".delItem").click(function (e) {
+
+                    e.preventDefault();
+                    $.get(this.href, function (data) {
+                        $('#dialogContent').html(data);
+                        $('#modDialog').modal('show');
+                    });
+                });
+            })
+        </script>
     }
