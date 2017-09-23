@@ -29,123 +29,134 @@
         foreach (var task in tasks)
         {
          <div class="row">
-    <div class="col-md-offset-2 col-md-8 form-group well">
-        <div class="row">
-            <div class="col-md-offset-2 col-md-8 text-center">
-                <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
-            </div>
-            <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
-            <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
-        </div>
-        <div class="row">
-            <div class="col-md-12">@task.Content</div>
-        </div>
-        <div class="row">
-            <div class="col-md-offset-10 col-md-1">@task.LastModified.ToShortDateString()</div>
+             <div class="col-md-offset-2 col-md-8 form-group well">
+                 <div class="row">
+                     <div class="col-md-offset-2 col-md-8 text-center">
+                         <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
+                     </div>
+                     <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
+                     <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
+                 </div>
+                 <div class="row">
+                     <div class="col-md-12">
+                         @foreach (var tag in task.Tags)
+                         {
+                             <span>@tag.ToString()</span>
+                         }
+                         </div>
+                     </div>
 
-        </div>
-        </div>
-    </div>
-        }
-    }
 
-        <div id="loadMore" class="col-md-offset-5 col-md-2 text-center text-info btn btn-primary">
-            <a>
-                Load More &raquo;
-                <span>
-                    <img id="loading" style="display: none;" />
-                </span>
-            </a>
-    </div>
-<div id="toTop" class="btn btn-warning text-center pull-right">
-    ^ Наверх </div >
+                         <div class="row">
+                             <div class="col-md-12">@task.Content</div>
+                         </div>
+                         <div class="row">
+                             <div class="col-md-offset-10 col-md-1">@task.LastModified.ToShortDateString()</div>
+
+                         </div>
+                     </div>
+                 </div>
+                 }
+                 }
+
+                 <div id="loadMore" class="col-md-offset-5 col-md-2 text-center text-info btn btn-primary">
+                     <a>
+                         Load More &raquo;
+                         <span>
+                             <img id="loading" style="display: none;" />
+                         </span>
+                     </a>
+                 </div>
+                 <div id="toTop" class="btn btn-warning text-center pull-right">
+                     ^ Наверх
+                 </div>
 @section scripts
 {
-        <script type="text/javascript">
-            $(function () {
+                     <script type="text/javascript">
+                         $(function () {
 
-                $(window).scroll(function () {
+                             $(window).scroll(function () {
 
-                    if ($(this).scrollTop() != 0) {
+                                 if ($(this).scrollTop() != 0) {
 
-                        $('#toTop').fadeIn();
+                                     $('#toTop').fadeIn();
 
-                    } else {
+                                 } else {
 
-                        $('#toTop').fadeOut();
+                                     $('#toTop').fadeOut();
 
-                    }
+                                 }
 
-                });
+                             });
 
-                $('#toTop').click(function () {
+                             $('#toTop').click(function () {
 
-                    $('body,html').animate({ scrollTop: 0 }, 800);
+                                 $('body,html').animate({ scrollTop: 0 }, 800);
 
-                });
+                             });
 
-            });
+                         });
 
 
-            $(function () {
+                         $(function () {
 
-                var loadCount = 1;
-                var loading = $("#loading");
-                $("#loadMore").on("click", function (e) {
+                             var loadCount = 1;
+                             var loading = $("#loading");
+                             $("#loadMore").on("click", function (e) {
 
-                    e.preventDefault();
+                                 e.preventDefault();
 
-                    $(document).on({
+                                 $(document).on({
 
-                        ajaxStart: function () {
-                            loading.show();
-                        },
-                        ajaxStop: function () {
-                            loading.hide();
-                        }
-                    });
+                                     ajaxStart: function () {
+                                         loading.show();
+                                     },
+                                     ajaxStop: function () {
+                                         loading.hide();
+                                     }
+                                 });
 
-                    var url = "/Home/LoadMoreTasks/";
-                    $.ajax({
-                        url: url,
-                        data: { size: loadCount * 3 },
-                        cache: false,
-                        type: "POST",
-                        success: function (data) {
+                                 var url = "/Home/LoadMoreTasks/";
+                                 $.ajax({
+                                     url: url,
+                                     data: { size: loadCount * 3 },
+                                     cache: false,
+                                     type: "POST",
+                                     success: function (data) {
 
-                            if (data.length !== 0) {
-                                $(data.ModelString).insertBefore("#loadMore").hide().fadeIn(2000);
-                            }
+                                         if (data.length !== 0) {
+                                             $(data.ModelString).insertBefore("#loadMore").hide().fadeIn(2000);
+                                         }
 
-                            var ajaxModelCount = data.ModelCount - (loadCount * 3);
-                            if (ajaxModelCount <= 0) {
-                                $("#loadMore").hide().fadeOut(2000);
-                            }
+                                         var ajaxModelCount = data.ModelCount - (loadCount * 3);
+                                         if (ajaxModelCount <= 0) {
+                                             $("#loadMore").hide().fadeOut(2000);
+                                         }
 
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(xhr.responseText);
-                            alert("message : \n" +
-                                "An error occurred, for more info check the js console" +
-                                "\n status : \n" + status + " \n error : \n" + error);
-                        }
-                    });
+                                     },
+                                     error: function (xhr, status, error) {
+                                         console.log(xhr.responseText);
+                                         alert("message : \n" +
+                                             "An error occurred, for more info check the js console" +
+                                             "\n status : \n" + status + " \n error : \n" + error);
+                                     }
+                                 });
 
-                    loadCount = loadCount + 1;
-                });
+                                 loadCount = loadCount + 1;
+                             });
 
-            });
+                         });
 
-            $(function () {
-                $.ajaxSetup({ cache: false });
-                $(".delItem").click(function (e) {
+                         $(function () {
+                             $.ajaxSetup({ cache: false });
+                             $(".delItem").click(function (e) {
 
-                    e.preventDefault();
-                    $.get(this.href, function (data) {
-                        $('#dialogContent').html(data);
-                        $('#modDialog').modal('show');
-                    });
-                });
-            })
-        </script>
-    }
+                                 e.preventDefault();
+                                 $.get(this.href, function (data) {
+                                     $('#dialogContent').html(data);
+                                     $('#modDialog').modal('show');
+                                 });
+                             });
+                         })
+                     </script>
+                 }
