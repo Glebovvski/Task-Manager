@@ -1,4 +1,4 @@
-﻿@model TaskManager.Models.PersonalTask
+@model TaskManager.Models.PersonalTask
 
 <p></p>
 @{
@@ -17,6 +17,14 @@
                 <div class="col-md-offset-2 col-md-8 text-center"><h2>@Model.Title</h2></div>
                 <h2><a href="~/Edit/Edit/@Model.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
                 <h2><a href="~/Delete/Delete/@Model.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span>@tag</span>
+                    }
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12 ">@Model.Content</div>
