@@ -18,12 +18,9 @@ namespace TaskManager.Controllers
             context = new TaskContext();
         }
 
-        public ActionResult Index(int? page=1)
+        public ActionResult Index()
         {
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-
-            var tasks = context.Task.OrderBy(c => c.Id).Take(pageSize);
+            var tasks = context.Task.OrderBy(c => c.Id).Take(3);
             return View(tasks);
         }
 
