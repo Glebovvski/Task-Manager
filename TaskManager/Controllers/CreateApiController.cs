@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using TaskManager.Helpers;
 using TaskManager.Models;
 
 namespace TaskManager.Controllers
@@ -10,21 +11,26 @@ namespace TaskManager.Controllers
     [Authorize]
     public class CreateApiController : ApiController
     {
+        private TaskContext context;
+
+        public CreateApiController()
+        {
+            context = new TaskContext();
+        }
         // GET: Update
         public IHttpActionResult Get()
         {
             return Ok();
         }
         [HttpPost]
-        public IHttpActionResult Post([FromBody]string content, [FromBody]string title)
+        public IHttpActionResult Post([FromBody]string content, [FromBody]string title,[FromBody]List<string> tags)
         {
-            var context = new TaskContext();
-
             var task = new PersonalTask()
             {
                 Title = title,
                 Content = content,
-                LastModified = DateTime.Now
+                LastModified = DateTime.Now,
+                Tags = CreateTagList.TagsList(tags)
             };
             context.Task.Add(task);
             context.SaveChanges();
@@ -34,3 +40,4 @@ namespace TaskManager.Controllers
         }
     }
 }
+
