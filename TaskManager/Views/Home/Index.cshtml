@@ -1,7 +1,6 @@
 @using TaskManager.Helpers
-
-@model IEnumerable<TaskManager.Models.PersonalTask>
-
+@using PagedList.Mvc
+@model PagedList.IPagedList<TaskManager.Models.PersonalTask>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -24,9 +23,7 @@
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
-    @foreach (var tasks in Model.Batch(3))
-    {
-        foreach (var task in tasks)
+        @foreach (var task in Model)
         {
          <div class="row">
              <div class="col-md-offset-2 col-md-8 form-group well">
@@ -41,7 +38,7 @@
                      <div class="col-md-12">
                          @foreach (var tag in task.Tags)
                          {
-                             <span>@tag.ToString()</span>
+                             <span>@tag</span>
                          }
                          </div>
                      </div>
@@ -57,22 +54,17 @@
                      </div>
                  </div>
                  }
-                 }
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-                 <div id="loadMore" class="col-md-offset-5 col-md-2 text-center text-info btn btn-primary">
-                     <a>
-                         Load More &raquo;
-                         <span>
-                             <img id="loading" style="display: none;" />
-                         </span>
-                     </a>
-                 </div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                  <div id="toTop" class="btn btn-warning text-center pull-right">
                      ^ Наверх
                  </div>
 @section scripts
 {
                      <script type="text/javascript">
+
+
                          $(function () {
 
                              $(window).scroll(function () {
@@ -93,56 +85,6 @@
 
                                  $('body,html').animate({ scrollTop: 0 }, 800);
 
-                             });
-
-                         });
-
-
-                         $(function () {
-
-                             var loadCount = 1;
-                             var loading = $("#loading");
-                             $("#loadMore").on("click", function (e) {
-
-                                 e.preventDefault();
-
-                                 $(document).on({
-
-                                     ajaxStart: function () {
-                                         loading.show();
-                                     },
-                                     ajaxStop: function () {
-                                         loading.hide();
-                                     }
-                                 });
-
-                                 var url = "/Home/LoadMoreTasks/";
-                                 $.ajax({
-                                     url: url,
-                                     data: { size: loadCount * 3 },
-                                     cache: false,
-                                     type: "POST",
-                                     success: function (data) {
-
-                                         if (data.length !== 0) {
-                                             $(data.ModelString).insertBefore("#loadMore").hide().fadeIn(2000);
-                                         }
-
-                                         var ajaxModelCount = data.ModelCount - (loadCount * 3);
-                                         if (ajaxModelCount <= 0) {
-                                             $("#loadMore").hide().fadeOut(2000);
-                                         }
-
-                                     },
-                                     error: function (xhr, status, error) {
-                                         console.log(xhr.responseText);
-                                         alert("message : \n" +
-                                             "An error occurred, for more info check the js console" +
-                                             "\n status : \n" + status + " \n error : \n" + error);
-                                     }
-                                 });
-
-                                 loadCount = loadCount + 1;
                              });
 
                          });
