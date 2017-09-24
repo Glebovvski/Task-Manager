@@ -7,6 +7,7 @@
     @Styles.Render("~/Content/css")
             @Scripts.Render("~/bundles/modernizr")
             <link href="~/Content/MyCSS.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-fixed-top">
@@ -32,7 +33,7 @@
             <p>&copy; @DateTime.Now.Year</p>
         </footer>
     </div>
-
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
