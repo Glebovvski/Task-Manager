@@ -17,7 +17,7 @@
   margin-left: -1px;
   line-height: 1.428571429;
   text-decoration: none;
-  background-color: #29a7ef;
+  background-color: #0094ff;
   border: 1px solid #dddddd;
 }
 
@@ -50,7 +50,7 @@
   z-index: 2;
   color: #ffffff;
   cursor: default;
-  background-color: #428bca;
+  background-color: #0026ff;
   border-color: #428bca;
 }
 
@@ -58,9 +58,9 @@
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,
 .pagination > .disabled > a:focus {
-  color: #428bca;
+  color: #999999;
   cursor: not-allowed;
-  background-color: #ffffff;
+  background-color: #0026ff;
   border-color: #dddddd;
 }
 
@@ -135,7 +135,7 @@
 .pager li > span {
   display: inline-block;
   padding: 5px 14px;
-  background-color: #088bfb;
+  background-color: #0026ff;
   border: 1px solid #dddddd;
   border-radius: 15px;
 }
@@ -143,7 +143,7 @@
 .pager li > a:hover,
 .pager li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: #0094ff;
 }
 
 .pager .next > a,
@@ -162,5 +162,5 @@
 .pager .disabled > span {
   color: #999999;
   cursor: not-allowed;
-  background-color: #ffffff;
+  background-color: #0026ff;
 }
