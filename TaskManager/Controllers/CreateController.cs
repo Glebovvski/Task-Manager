@@ -23,12 +23,13 @@ namespace TaskManager.Controllers
         [HttpPost]
         public ActionResult Create(string content, string title, List<string> tags)
         {
+            List<string> temp = CreateTagList.TagsList(tags);
             var task = new PersonalTask()
             {
                 Title = title,
                 Content = content,
                 LastModified = DateTime.Now,
-                Tags = CreateTagList.TagsList(tags)
+                Tags = temp
             };
             context.Task.Add(task);
             context.SaveChanges();
