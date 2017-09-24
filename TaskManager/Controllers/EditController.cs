@@ -30,10 +30,11 @@ namespace TaskManager.Controllers
         public ActionResult Edit(int id, string content,string title,List<string> tags)
         {
             var task = context.Task.FirstOrDefault(x => x.Id == id);
+            List<string> temp = CreateTagList.TagsList(tags);
             if (task != null)
             {
                 task.Title = title;
-                task.Tags = CreateTagList.TagsList(tags);
+                task.Tags = temp;
                 task.Content = content;
                 task.LastModified = DateTime.Now.Date;
                 context.SaveChanges();
