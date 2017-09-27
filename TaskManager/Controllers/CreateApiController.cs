@@ -23,14 +23,14 @@ namespace TaskManager.Controllers
             return Ok();
         }
         [HttpPost]
-        public IHttpActionResult Post([FromBody]string content, [FromBody]string title,[FromBody]List<string> tags)
+        public IHttpActionResult Post([FromBody]string content, [FromBody]string title,[FromBody]string tags)
         {
             var task = new PersonalTask()
             {
                 Title = title,
                 Content = content,
                 LastModified = DateTime.Now,
-                Tags = CreateTagList.TagsList(tags)
+                Tags = tags
             };
             context.Task.Add(task);
             context.SaveChanges();
@@ -40,4 +40,3 @@ namespace TaskManager.Controllers
         }
     }
 }
-
