@@ -21,15 +21,14 @@ namespace TaskManager.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create(string content, string title, List<string> tags)
+        public ActionResult Create(string content, string title, string tags)
         {
-            List<string> temp = CreateTagList.TagsList(tags);
             var task = new PersonalTask()
             {
                 Title = title,
                 Content = content,
                 LastModified = DateTime.Now,
-                Tags = temp
+                Tags = tags
             };
             context.Task.Add(task);
             context.SaveChanges();
