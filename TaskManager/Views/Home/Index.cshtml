@@ -1,4 +1,3 @@
-@using TaskManager.Helpers
 @using PagedList.Mvc
 @model PagedList.IPagedList<TaskManager.Models.PersonalTask>
 @{
@@ -15,8 +14,20 @@
     }
 
 <div class="row">
-    <div class="col-md-offset-2 btn btn-success text-center text-info">
-        @Ajax.ActionLink("Create new Task", "Create", "Create", options)
+    <div class="col-md-offset-2 col-md-2 btn btn-success text-center ">
+        <div>
+            @Ajax.ActionLink("Create new Task", "Create", "Create", options)
+        </div>
+    </div>
+    <div class="col-md-offset-3 col-md-5 ">
+        <span>Search by </span>
+        <select id="list">
+            <option value="Title">Title</option>
+            <option value="Tags">Tags</option>
+            <option value="Content">Content</option>
+        </select>:
+        <input type="text" value="" id="search" placeholder="search" />
+        @Html.ActionLink("Search", "Search",new {search = "searchValue", type="typeValue" },new { @class= "btn btn-success link type" })
     </div>
 </div>
 <br />
@@ -34,16 +45,12 @@
                      <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
                      <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
                  </div>
+                 <br />
                  <div class="row">
                      <div class="col-md-12">
-                         @foreach (var tag in task.Tags)
-                         {
-                             <span>@tag</span>
-                         }
+                             <span class="text-muted">Tags: @task.Tags.ToString()</span>
                          </div>
                      </div>
-
-
                          <div class="row">
                              <div class="col-md-12">@task.Content</div>
                          </div>
@@ -54,6 +61,7 @@
                      </div>
                  </div>
                  }
+
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
@@ -64,6 +72,19 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 {
                      <script type="text/javascript">
 
+                         $(function () {
+                             $('.link').click(function () {
+                                 var search = $("#search").val();
+                                 this.href = this.href.replace("searchValue", search);
+                             });
+                         });
+
+                         $(function () {
+                             $('.type').click(function () {
+                                 var type = $("#list").children.dropdown.val();
+                                 this.href = this.href.replace("typeValue", type);
+                             });
+                         });
 
                          $(function () {
 
