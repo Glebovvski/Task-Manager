@@ -17,11 +17,9 @@
                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
                     <br />
-                    @{
-                        var tags = Model.Tags.ToString();
-                    }
                         <div>
-                            @Html.TextBoxFor(Model=>Model.Tags, new { placeholder = "Tag1, tag2, ...", @class = "form-control text-left" })
+                           @Html.TextBoxFor( tags=>tags.Tags, new { placeholder = "Tag1, tag2, ...", @class = "form-control text-left" })
+                           
                         </div>
                    
                     <br />
