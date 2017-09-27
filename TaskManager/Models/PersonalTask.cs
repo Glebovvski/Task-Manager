@@ -11,12 +11,12 @@ namespace TaskManager.Models
     {
         public PersonalTask()
         {
-            Tags = new List<string>();
+            
         }
         [Key]
         public int Id { get; set; }
         [Required]
-        public List<string> Tags { get; set; }
+        public string Tags { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
