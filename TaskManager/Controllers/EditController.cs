@@ -27,14 +27,13 @@ namespace TaskManager.Controllers
 
         // POST: Update/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, string content,string title,List<string> tags)
+        public ActionResult Edit(int id, string content,string title,string tags)
         {
             var task = context.Task.FirstOrDefault(x => x.Id == id);
-            List<string> temp = CreateTagList.TagsList(tags);
             if (task != null)
             {
                 task.Title = title;
-                task.Tags = temp;
+                task.Tags = tags;
                 task.Content = content;
                 task.LastModified = DateTime.Now.Date;
                 context.SaveChanges();
