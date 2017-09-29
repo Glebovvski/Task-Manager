@@ -20,11 +20,8 @@ namespace TaskManager.Controllers
             context = new TaskContext();
         }
 
-        public ActionResult Index(int? page=1)
+        public ActionResult Index(int? page = 1)
         {
-            List<string> types = new List<string>() { "Title", "Tags", "Content" };
-            SelectList typesList = new SelectList(types);
-            ViewBag.Types = typesList;
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             var tasks = context.Task.OrderByDescending(x=>x.LastModified).ToList();
@@ -34,15 +31,15 @@ namespace TaskManager.Controllers
         public ActionResult Search(string search, string type)
         {
             var tasksearch = new List<PersonalTask>();
-            if (type == "Title")
+            if (type.Contains("Title"))
             {
                 tasksearch = context.Task.Where(s => s.Title.Contains(search)).ToList();
             }
-            if (type == "Tags")
+            if (type.Contains("Tags"))
             {
                 tasksearch = context.Task.Where(s => s.Tags.Contains(search)).ToList();
             }
-            if (type == "Content")
+            if (type.Contains("Content"))
             {
                 tasksearch = context.Task.Where(s => s.Content.Contains(search)).ToList();
             }
@@ -50,7 +47,6 @@ namespace TaskManager.Controllers
                 return RedirectToAction("TaskView", new { id = tasksearch.FirstOrDefault().Id });
             if (tasksearch.Count==0) throw new HttpException(404, "NotFound");
             else return View(tasksearch);
-            
         }
 
         public ActionResult TaskView(int id)
