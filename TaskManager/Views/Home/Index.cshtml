@@ -14,20 +14,20 @@
     }
 
 <div class="row">
-    <div class="col-md-offset-2 col-md-2 btn btn-success text-center ">
+    <div class="col-md-offset-2 col-md-2 col-sm-offset-1 col-sm-3  col-xs-3 btn btn-success text-center ">
         <div>
             @Ajax.ActionLink("Create new Task", "Create", "Create", options)
         </div>
     </div>
-    <div class="col-md-offset-3 col-md-5 ">
+    <div class="col-md-offset-2 col-md-6 col-sm-offset-2 col-sm-7 col-xs-10 ">
         <span>Search by </span>
         <select id="list">
-            <option value="Title">Title</option>
-            <option value="Tags">Tags</option>
-            <option value="Content">Content</option>
+            <option id ="listtype" value="Title">Title</option>
+            <option id ="listtype" value="Tags">Tags</option>
+            <option id ="listtype" value="Content">Content</option>
         </select>:
         <input type="text" value="" id="search" placeholder="search" />
-        @Html.ActionLink("Search", "Search",new {search = "searchValue", type="typeValue" },new { @class= "btn btn-success link type" })
+        @Html.ActionLink("Search", "Search",new {search = "searchValue", type="typeValue" },new { @class = "btn btn-success link type" })
     </div>
 </div>
 <br />
@@ -37,13 +37,13 @@
         @foreach (var task in Model)
         {
          <div class="row">
-             <div class="col-md-offset-2 col-md-8 form-group well">
+             <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 form-group well">
                  <div class="row">
-                     <div class="col-md-offset-2 col-md-8 text-center">
+                     <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-10 text-center">
                          <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
                      </div>
-                     <h2><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 glyphicon glyphicon-list-alt "></a></h2>
-                     <h2><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
+                     <h2 class="icon"><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 col-sm-1 col-xs-1 glyphicon glyphicon-list-alt "></a></h2>
+                     <h2 class="icon"><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 col-sm-1 col-xs-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
                  </div>
                  <br />
                  <div class="row">
@@ -55,71 +55,21 @@
                              <div class="col-md-12">@task.Content</div>
                          </div>
                          <div class="row">
-                             <div class="col-md-offset-10 col-md-1">@task.LastModified.ToShortDateString()</div>
-
+                             <div class="pull-right">@task.LastModified.ToShortDateString()</div>
                          </div>
                      </div>
                  </div>
                  }
-
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-                 <div id="toTop" class="btn btn-warning text-center pull-right">
-                     ^ Наверх
-                 </div>
+<div class="row">
+    <div class=" text-center">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+    <div class=" text-center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    </div>
+    <div id="toTop" class="btn btn-warning pull-right ">
+        ^ Up
+    </div>
+</div>
 @section scripts
-{
-                     <script type="text/javascript">
-
-                         $(function () {
-                             $('.link').click(function () {
-                                 var search = $("#search").val();
-                                 this.href = this.href.replace("searchValue", search);
-                             });
-                         });
-
-                         $(function () {
-                             $('.type').click(function () {
-                                 var type = $("#list").children.dropdown.val();
-                                 this.href = this.href.replace("typeValue", type);
-                             });
-                         });
-
-                         $(function () {
-
-                             $(window).scroll(function () {
-
-                                 if ($(this).scrollTop() != 0) {
-
-                                     $('#toTop').fadeIn();
-
-                                 } else {
-
-                                     $('#toTop').fadeOut();
-
-                                 }
-
-                             });
-
-                             $('#toTop').click(function () {
-
-                                 $('body,html').animate({ scrollTop: 0 }, 800);
-
-                             });
-
-                         });
-
-                         $(function () {
-                             $.ajaxSetup({ cache: false });
-                             $(".delItem").click(function (e) {
-
-                                 e.preventDefault();
-                                 $.get(this.href, function (data) {
-                                     $('#dialogContent').html(data);
-                                     $('#modDialog').modal('show');
-                                 });
-                             });
-                         })
-                     </script>
-                 }
+{}
