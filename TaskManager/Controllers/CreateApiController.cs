@@ -1,8 +1,10 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using TaskManager.Dto;
 using TaskManager.Helpers;
 using TaskManager.Models;
 
@@ -23,20 +25,13 @@ namespace TaskManager.Controllers
             return Ok();
         }
         [HttpPost]
-        public IHttpActionResult Post([FromBody]string content, [FromBody]string title,[FromBody]string tags)
+        public IHttpActionResult Post(PersonalTaskDto personalTask)
         {
-            var task = new PersonalTask()
-            {
-                Title = title,
-                Content = content,
-                LastModified = DateTime.Now,
-                Tags = tags
-            };
+            var task = Mapper.Map<PersonalTaskDto, PersonalTask>(personalTask); 
             context.Task.Add(task);
             context.SaveChanges();
-
+            personalTask.Id = task.Id;
             return Ok(task);
-
         }
     }
 }
