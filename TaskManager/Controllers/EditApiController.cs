@@ -1,8 +1,10 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using TaskManager.Dto;
 using TaskManager.Helpers;
 using TaskManager.Models;
 
@@ -27,17 +29,12 @@ namespace TaskManager.Controllers
 
         // POST: Update/Edit/5
         [HttpPatch,HttpPut]
-        public IHttpActionResult Patch(int id, [FromBody]string content, [FromBody]string title, [FromBody]string tags)
+        public IHttpActionResult Patch(int id, PersonalTaskDto pTaskDto)
         {
             var task = context.Task.FirstOrDefault(x => x.Id == id);
-            if (task != null)
-            {
-                task.Title = title;
-                task.Tags = tags;
-                task.Content = content;
-                task.LastModified = DateTime.Now.Date;
-                context.SaveChanges();
-            }
+            Mapper.Map<PersonalTaskDto, PersonalTask>(pTaskDto, task);
+            if (task != null) context.SaveChanges();
+            else return NotFound();
             return Ok(task);
         }
     }
