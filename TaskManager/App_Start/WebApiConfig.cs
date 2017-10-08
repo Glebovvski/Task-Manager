@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+
 
 namespace TaskManager
 {
@@ -12,6 +15,11 @@ namespace TaskManager
             // Web API configuration and services
 
             // Web API routes
+
+            var settings = config.Formatters.JsonFormatter.SerializerSettings;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Formatting = Formatting.Indented;
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

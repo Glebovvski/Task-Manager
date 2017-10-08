@@ -27,11 +27,12 @@ namespace TaskManager.Controllers
         [HttpPost]
         public IHttpActionResult Post(PersonalTaskDto personalTask)
         {
+            if (!ModelState.IsValid) return BadRequest();
             var task = Mapper.Map<PersonalTaskDto, PersonalTask>(personalTask); 
             context.Task.Add(task);
             context.SaveChanges();
             personalTask.Id = task.Id;
-            return Ok(task);
+            return Created(new Uri(Request.RequestUri + "/" + task.Id), personalTask); 
         }
     }
 }
