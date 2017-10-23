@@ -9,7 +9,6 @@ using TaskManager.Models;
 namespace TaskManager.Controllers
 {
     [Authorize]
-    [ValidateAntiForgeryToken]
     public class EditController : Controller
     {
         private TaskContext context;
