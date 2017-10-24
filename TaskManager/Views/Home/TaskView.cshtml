@@ -5,35 +5,27 @@
         ViewBag.Title = "View Task";
     }
 
-    <div id="modDialog" class="modal fade">
-        <div id="dialogContent" class="modal-dialog"></div>
-    </div>
-
-    @using (Html.BeginForm())
-    {
-        <div class="row ">
-            <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 form-group well">
-                <div class="row">
-                    <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-10 text-center"><h2>@Model.Title</h2></div>
-                    <h2><a href="~/Edit/Edit/@Model.Id" class="nolink col-md-1 col-sm-1 col-xs-1 glyphicon glyphicon-list-alt "></a></h2>
-                    <h2><a href="~/Delete/Delete/@Model.Id" class="nolink col-md-1 col-sm-1 col-xs-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
-                </div>
-                <br />
-                <div class="row">
-                    <div class="col-md-12">
+        <form id="container">
+            <div class="row ">
+                <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 form-group well">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-10 text-center"><h2>@Model.Title</h2></div>
+                        <h2><a href="~/Edit/Edit/@Model.Id" class="nolink col-md-1 col-sm-1 col-xs-1 glyphicon glyphicon-list-alt "></a></h2>
+                        <h2 class="icon"><button data-task-id="@Model.Id" class="nolink btn-link col-md-1 col-sm-1 col-xs-1 pull-right delItem glyphicon glyphicon-trash"></button></h2>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
                             <span class="text-muted">Tags: @Model.Tags</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 ">@Model.Content</div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">@Model.LastModified.ToShortDateString()</div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 ">@Model.Content</div>
-                </div>
-                <div class="row">
-                    <div class="pull-right">@Model.LastModified.ToShortDateString()</div>
-                </div>
             </div>
-        </div>
-    }
+        </form>
 
-    @section scripts
-    {
-    }
