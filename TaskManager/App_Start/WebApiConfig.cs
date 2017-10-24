@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -23,23 +23,16 @@ namespace TaskManager
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "HomeApi",
-                routeTemplate: "api/{controller}"
-            );
-            config.Routes.MapHttpRoute(
-                name: "EditApi",
+                name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
             config.Routes.MapHttpRoute(
-                name: "CreateApi",
-                routeTemplate: "api/{controller}",
+                name: "DeleteApi",
+                routeTemplate: "Home/TaskView/api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.Routes.MapHttpRoute(
-                name: "DeleteApi",
-                routeTemplate: "api/{controller}/{id}"
-            );
+
         }
     }
 }
