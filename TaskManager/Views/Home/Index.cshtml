@@ -31,35 +31,35 @@
     </div>
 </div>
 <br />
-<div id="modDialog" class="modal fade">
-    <div id="dialogContent" class="modal-dialog"></div>
-</div>
+
         @foreach (var task in Model)
         {
-         <div class="row">
-             <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 form-group well">
-                 <div class="row">
-                     <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-10 text-center">
-                         <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
-                     </div>
-                     <h2 class="icon"><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 col-sm-1 col-xs-1 glyphicon glyphicon-list-alt "></a></h2>
-                     <h2 class="icon"><a href="~/Delete/Delete/@task.Id" class="nolink col-md-1 col-sm-1 col-xs-1 pull-right delItem glyphicon glyphicon-trash"></a></h2>
-                 </div>
-                 <br />
-                 <div class="row">
-                     <div class="col-md-12">
-                             <span class="text-muted">Tags: @task.Tags.ToString()</span>
-                         </div>
-                     </div>
-                         <div class="row">
-                             <div class="col-md-12">@task.Content</div>
-                         </div>
-                         <div class="row">
-                             <div class="pull-right">@task.LastModified.ToShortDateString()</div>
-                         </div>
-                     </div>
-                 </div>
-                 }
+            <form id="container">
+                <div  class="row">
+                    <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 form-group well">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-10 text-center">
+                                <h2>@Html.ActionLink(task.Title, "TaskView", new { id = task.Id }, new { @class = "nolink" })</h2>
+                            </div>
+                            <h2 class="icon"><a href="~/Edit/Edit/@task.Id" class="nolink col-md-1 col-sm-1 col-xs-1 glyphicon glyphicon-list-alt "></a></h2>
+                            <h2 class="icon"><button data-task-id="@task.Id" class="nolink btn-link col-md-1 col-sm-1 col-xs-1 pull-right delItem glyphicon glyphicon-trash"></button></h2>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="text-muted">Tags: @task.Tags.ToString()</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">@task.Content</div>
+                        </div>
+                        <div class="row">
+                            <div class="pull-right">@task.LastModified.ToShortDateString()</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
 <div class="row">
     <div class=" text-center">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -71,5 +71,3 @@
         ^ Up
     </div>
 </div>
-@section scripts
-{}
